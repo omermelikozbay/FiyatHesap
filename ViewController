@@ -1,0 +1,108 @@
+//
+//  ViewController.swift
+//  FiyatHesaplama
+//
+//  Created by DEBA A.Ş. on 25.10.2017.
+//  Copyright © 2017 melikozbay. All rights reserved.
+//
+
+import UIKit
+
+
+class ViewController: UIViewController, UITextFieldDelegate {
+    @IBOutlet weak var en: UITextField!
+    @IBOutlet weak var boy: UITextField!
+    @IBOutlet weak var kalinlik: UITextField!
+    @IBOutlet weak var ozgulAgirlik: UITextField!
+    @IBOutlet weak var opp: UITextField!
+    @IBOutlet weak var gramFiyati: UITextField!
+    @IBOutlet weak var adetFiyati: UILabel!
+    @IBOutlet weak var bantFiyati: UILabel!
+    @IBOutlet weak var gramFiyatiLabel: UILabel!
+    
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        let allowedCharacters = CharacterSet.decimalDigits
+        let characterSet = CharacterSet(charactersIn: string)
+        return allowedCharacters.isSuperset(of: characterSet)
+        
+       
+    }
+    
+    
+    
+    @IBAction func fiyatHesapla(_ sender: Any) {
+        let enDegeri = Double(en.text!)
+        let boyDegeri = Double(boy.text!)
+        let kalinlikDegeri = Double(kalinlik.text!)
+        let ozgulAgirlikDegeri = Double(ozgulAgirlik.text!)
+        let oppDegeri = Double(opp.text!)
+
+        let gr = String(enDegeri! * boyDegeri! * kalinlikDegeri! * ozgulAgirlikDegeri! * oppDegeri!)
+        gramFiyatiLabel.text = gr
+        
+        adetFiyati.text = String(Double(gr)! / 1000.0)
+        
+    }
+    
+
+    @IBAction func BantFiyatiHesapla(_ sender: Any) {
+        let enDegeri = Double(en.text!)
+        let boyDegeri = Double(boy.text!)
+        let kalinlikDegeri = Double(kalinlik.text!)
+        let ozgulAgirlikDegeri = Double(ozgulAgirlik.text!)
+        let oppDegeri = Double(opp.text!)
+        
+        let bantliEn = enDegeri! * 1.30
+        
+        let bf = String(bantliEn * boyDegeri! * kalinlikDegeri! * ozgulAgirlikDegeri! * oppDegeri!)
+        bantFiyati.text = String(Double(bf)! / 1000.0)
+    }
+    
+    @IBOutlet weak var kdv: UITextField!
+    @IBOutlet weak var toplamFiyat: UITextField!
+    
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.en.delegate = self;
+        self.boy.delegate = self;
+        self.kalinlik.delegate = self;
+        self.ozgulAgirlik.delegate = self;
+        self.opp.delegate = self;
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(ViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
+        
+        // Do any additional setup after loading the view, typically from a nib.
+        
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    @objc func dismissKeyboard(tap: UITapGestureRecognizer) {
+        en.resignFirstResponder()
+        boy.resignFirstResponder()
+        kalinlik.resignFirstResponder()
+        ozgulAgirlik.resignFirstResponder()
+        opp.resignFirstResponder()
+        
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        en.resignFirstResponder()
+        boy.resignFirstResponder()
+        kalinlik.resignFirstResponder()
+        ozgulAgirlik.resignFirstResponder()
+        opp.resignFirstResponder()
+        return true
+    }
+    
+
+
+}
